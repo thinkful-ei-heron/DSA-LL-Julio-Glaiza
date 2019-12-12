@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-console */
 const _Node = require('./_Node');
 class linkedList {
@@ -25,7 +26,7 @@ class linkedList {
     if (this.head.value === item) {
       this.insertFirst(value);
     } else {
-      while (currNode.value !== item) {
+      while ((currNode !== null) && (currNode.value !== item)) {
         newNode = currNode;
         currNode = currNode.next;
       }
@@ -34,13 +35,35 @@ class linkedList {
   }
 
   insertAfter(item, value) {
+    // let currNode = this.head;
+    // let nextNode = this.head;
+
+    // if(this.head.value === item) {
+    //   this.insertFirst(value);
+    // } else {
+    //   while ((currNode !== null) && (currNode.value !== item)) {
+    //     nextNode = currNode;
+    //     currNode = currNode.next;
+    //   }
+    // }
+    //   // console.log(currNode.next)
+    //   // console.log(nextNode)
+    //   // console.log(value)
+    //   currNode.next = new _Node(value, nextNode);
+    let currNode = this.find(item);
+    let nextNode =  currNode.next;
+
+    currNode.next = new _Node(value, nextNode);
+  }
+
+  insertAt(index, value) {
+    let currIndex = 0;
     let currNode = this.head;
-    let newNode = this.head;
-    while (currNode.value !== item) {
-      newNode = currNode.next;
+    while(currIndex !== (index-1)) {
       currNode = currNode.next;
+      currIndex++;
     }
-    newNode.next = new _Node(value, currNode);
+    currNode.next = new _Node(value, currNode.next.next);
   }
 
   find(item) {
@@ -88,5 +111,109 @@ class linkedList {
     }
     console.log(str);
   }
+
+  //it returns the size of the list
+  sizeOfList() {
+      let currNode = this.head;
+      let count = 0;
+      while(currNode !== null) {
+          count++;
+          currNode = currNode.next;
+      }
+      return count;
+  }
+
+  isEmpty() {
+    if(this.head === null) {
+      return true;
+    } else return false;
+  }
+
+  //it finds previous item in the list
+  findPrevious(item) {
+    let currNode = this.head;
+    let prevNode = currNode;
+
+    if(currNode === null) {
+        return 'Empty List';
+    } else {
+      while(( currNode !== null) && (currNode.value !== item)){
+        prevNode = currNode;
+        currNode = currNode.next;
+      } 
+    }
+    return prevNode;
+  }
+  
+  findLast() {
+    let currNode = this.head;
+    while(currNode.next !== null) {
+      currNode = currNode.next;
+    }
+    return currNode;
+  }
+
+  // reverse(list, length = this.sizeOfList()) {
+  //   console.log(list)
+  //   if(length === 0) {
+  //     return list;
+  //   }
+  //   let lastNode = this.findLast();
+  //   let preNode = this.findPrevious(lastNode.value);
+  //   preNode.next = null;
+  //   lastNode.next = this.head.next;
+  //   this.reverse(list, length - 1);
+  // }
+  reverse(node) {
+    if (node.next !== null) {
+      this.reverse(node.next);
+      node.next.next = node;
+      node.next = null;
+    } else {
+      this.head = node;
+    }
+  }
+
+  thirdFromTheEnd() {
+    let currNode = this.head;
+    while(currNode.next.next.next !== null) {
+      currNode = currNode.next;
+    }
+    return currNode;
+  }
+
+  middleOfList(list) {
+    let currNode = list.head;
+    console.log(currNode)
+    let middleNode = list.head;
+    let cnt = 0;
+    if(currNode === null) return null;
+
+    while(currNode.next !== null) {
+      currNode = currNode.next;
+      if(cnt) {
+        middleNode = middleNode.next;
+      }
+      cnt++;
+      cnt = cnt % 2;
+    }
+    // console.log('middle' + middleNode.value);
+    return middleNode;
+  }
+
+
+  isCyle(list){
+    let currNode = list.head;
+    let checkList = [];
+
+    while(currNode !== null){
+      if(!currNode.next) return 'Is not a cycle';
+      if(checkList.includes(currNode.next)) return 'It is a cycle';
+      checkList.push(currNode);
+      currNode = currNode.next;
+    }
+  }
+
+  
 }
 module.exports = linkedList;
