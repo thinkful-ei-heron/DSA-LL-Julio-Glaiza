@@ -73,14 +73,18 @@ class doublyLinkedList {
         }
         return currNode;
     }
-    reverse(node) {
-        if (node.next !== null) {
-          this.reverse(node.next);
-          node.next.next = node;
-          node.next = null;
-        } else {
-          this.head = node;
+    reverse() {
+        let currNode = this.head;
+        while(currNode.next !== null) {
+            let next = currNode.next;
+            currNode.next = currNode.prev;
+            currNode.prev =  currNode.next;
+            currNode = next;
         }
+        currNode.next = currNode.prev;
+        currNode.prev = null;
+        this.tail = this.head;
+        this.head = currNode;
     }
     printList() {
         let curr = this.head;
@@ -101,13 +105,16 @@ function main() {
     DLL.insertLast('Picon');
     DLL.insertLast('Sagittaron');
     //DLL.printList();
-    DLL.insertAfter('Gemenon','AfterGem');
-    DLL.insertBefore('Caprica', 'B4Cap');
-    DLL.insertAt(1,'Water');
-    DLL.remove('Picon');
+    //DLL.insertAfter('Gemenon','AfterGem');
+    //DLL.insertBefore('Caprica', 'B4Cap');
+    //DLL.insertAt(1,'Water');
+    //DLL.remove('Picon');
     // console.log(DLL.find('Caprica'));
-    DLL.insertLast('Latte');
+    //DLL.insertLast('Latte');
+    //DLL.printList();
+    // console.log(DLL.tail.value);
     DLL.printList();
-    console.log(DLL.tail.value);
+    DLL.reverse();
+    DLL.printList();
 }
 main();
